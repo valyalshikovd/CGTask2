@@ -1,15 +1,15 @@
-package ru.vsu.cs.kg2023.valyalschikov_d_a;
+package ru.vsu.cs.kg2023.valyalschikov_d_a.spline;
 import org.apache.commons.math3.linear.*;
 public class Spline {
-    private PointForSpline firstPoint;
-    private PointForSpline secondPoint;
-    private PointForSpline thirdPoint;
-    private double x1;
-    private double x2;
-    private double x3;
-    private double y1;
-    private double y2;
-    private double y3;
+    private final PointForSpline firstPoint;
+    private final PointForSpline secondPoint;
+    private final PointForSpline thirdPoint;
+    private final double x1;
+    private final double x2;
+    private final double x3;
+    private final double y1;
+    private final double y2;
+    private final double y3;
     private double a;
     private double b;
     private double c;
@@ -44,7 +44,7 @@ public class Spline {
         this.c =  arrCoeff[2];
         this.d =  arrCoeff[3];
     }
-    SetOfPoints getPointsArr(){
+    public SetOfPoints getPointsArr(){
         SetOfPoints res = new SetOfPoints();
         double length = thirdPoint.getX() - secondPoint.getX();
         double x = secondPoint.getX();

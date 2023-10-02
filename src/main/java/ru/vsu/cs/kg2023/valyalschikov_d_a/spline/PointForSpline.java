@@ -1,4 +1,4 @@
-package ru.vsu.cs.kg2023.valyalschikov_d_a;
+package ru.vsu.cs.kg2023.valyalschikov_d_a.spline;
 import javafx.geometry.Point2D;
 public class PointForSpline extends Point2D {
     private double firstDiff;

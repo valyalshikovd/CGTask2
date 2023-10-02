@@ -1,4 +1,4 @@
-package ru.vsu.cs.kg2023.valyalschikov_d_a;
+package ru.vsu.cs.kg2023.valyalschikov_d_a.spline;
 
 import java.util.ArrayList;
 import java.util.List;
