@@ -12,7 +12,7 @@ public class Spline {
     public List<Double> getSpline() {
         return spline;
     }
-
+public int c = 1;
     public boolean isX;
 
     public Spline(List<PointForSpline> val, boolean isX) {
@@ -22,17 +22,15 @@ public class Spline {
         getResultats();
 
     }
-
-
-
     private void getResultats() {
         for (int i = 2; i < val.size(); i++) {
             double[] coefficients = solutionEquation(val.get(i-2), val.get(i-1), val.get(i));
-            System.out.println(val.get(i - 1).getCoordParameter() + " Параметр точки -1");
-            System.out.println(val.get(i - 2).getCoordParameter() + " Параметр точки -2");
+
+    //        System.out.println(val.get(i - 1).getCoordParameter() + " Параметр точки -1");
+     //       System.out.println(val.get(i - 2).getCoordParameter() + " Параметр точки -2");
             double length = val.get(i - 1).getCoordParameter() - val.get(i - 2).getCoordParameter();
             double x = val.get(i - 2).getCoordParameter();
-            System.out.println(length + "длинна");
+            //System.out.println(length + "длинна");
             //System.out.println(val.get(i - 1).getCoordParameter());
             for (int j = 0; j < Math.abs(length); j++) {
               //  System.out.println(length);
@@ -50,7 +48,7 @@ public class Spline {
                 x = val.get(i - 1).getCoordParameter();
                 for (int k = 0; k < Math.abs(length) ; k++) {
                     x++;
-                    spline.add(coefficients[0] * Math.pow(x, 3) +
+                    spline.add( coefficients[0] * Math.pow(x, 3) +
                             coefficients[1] * Math.pow(x, 2)+
                             coefficients[2] * x  +
                             coefficients[3]
@@ -67,6 +65,9 @@ public class Spline {
         double x2 = pt2.getCoordParameter();
         double x3 = pt3.getCoordParameter();
 
+
+
+
         RealMatrix matrix = MatrixUtils.createRealMatrix(new double[][]{
                 {Math.pow(x1, 3), Math.pow(x1, 2), x1, 1},
                 {Math.pow(x2, 3), Math.pow(x2, 2), x2, 1},
@@ -75,7 +76,7 @@ public class Spline {
             //    {6 * x1, 4, 0, 0}
         });
         RealVector constants = new ArrayRealVector(
-                new double[]{pt1.getVal(), pt2.getVal(), pt3.getVal(), pt1.getFirstDiff()});
+                new double[]{pt1.getVal() , pt2.getVal() , pt3.getVal() , pt1.getFirstDiff()});
         LUDecomposition luDecomposition = new LUDecomposition(matrix);
         RealVector solution = luDecomposition.getSolver().solve(constants);
         double[] res = solution.toArray();
@@ -85,6 +86,21 @@ public class Spline {
         pt2.setSecondDiff(
                 6 * x2  * res[0] + 4  * res[1]
         );
+
+
+//          System.out.println(
+//                + x1 + " параметр 1" + "\n"
+//                + x2 + " параметр 2" + "\n"
+//                + x3 + " параметр 3" + "\n"
+//                + pt1.getVal() + " значение 1" + "\n"
+//                + pt2.getVal() + " значение 2" + "\n"
+//                + pt3.getVal() + " значение 3" + "\n"
+//                + res[0] + " коэффициент А" + "\n"
+//                + res[1] + " коэффициент В" + "\n"
+//                + res[2] + " коэффициент С" + "\n"
+//                + res[3] + " коэффициент D" + "\n"
+//        + "Это x " + isX);
+
         return solution.toArray();
 
     }

@@ -22,6 +22,7 @@ public class HelloController {
     ArrayList<PointForSpline> pointsX = new ArrayList<PointForSpline>();
     ArrayList<PointForSpline> pointsY = new ArrayList<PointForSpline>();
     List<PointForSpline> lastPoints = new ArrayList<>();
+    ArrayList<Double> diffParams = new ArrayList<>();
     int counterOfPoints = 0;
     double c = 0.2;
 
@@ -51,10 +52,13 @@ public class HelloController {
 
         if (counterOfPoints == 1) {
             System.out.println("--");
-            double params = pointsX.get(0).getCoordParameter() + Math.pow(Math.pow(clickPoint.getX() + pointsX.get(counterOfPoints - 1).getVal(), 2) +
+            double params = pointsX.get(0).getCoordParameter() + c * Math.pow(Math.pow(clickPoint.getX() - pointsX.get(counterOfPoints - 1).getVal(), 2) +
                     Math.pow(clickPoint.getY() - pointsY.get(counterOfPoints - 1).getVal(), 2), 0.5);
-            PointForSpline ptX = new PointForSpline(params*c, clickPoint.getX());
-            PointForSpline ptY = new PointForSpline(params*c, clickPoint.getY());
+            diffParams.add(c*Math.pow(Math.pow(clickPoint.getX() - pointsX.get(counterOfPoints - 1).getVal(), 2) +
+                    Math.pow(clickPoint.getY() - pointsY.get(counterOfPoints - 1).getVal(), 2), 0.5));
+            System.out.println(params + " ПАРМЕТР ");
+            PointForSpline ptX = new PointForSpline(params, clickPoint.getX());
+            PointForSpline ptY = new PointForSpline(params, clickPoint.getY());
             ptX.setFirstDiff((ptX.getVal() - pointsX.get(0).getVal()) /
                     (ptX.getCoordParameter() - pointsX.get(0).getCoordParameter()));
             ptY.setFirstDiff((ptY.getVal() - pointsY.get(0).getVal()) /
@@ -67,10 +71,16 @@ public class HelloController {
             drawSpline(graphicsContext);
             return;
         }
-        double params = pointsX.get(counterOfPoints-2).getCoordParameter() + Math.pow(Math.pow(clickPoint.getX() + pointsX.get(counterOfPoints - 1).getVal(), 2) +
+        double params = pointsX.get(counterOfPoints-1).getCoordParameter() + c * Math.pow(Math.pow(clickPoint.getX() - pointsX.get(counterOfPoints - 1).getVal(), 2) +
                 Math.pow(clickPoint.getY() - pointsY.get(counterOfPoints - 1).getVal(), 2), 0.5);
-        PointForSpline ptX = new PointForSpline(params*c, clickPoint.getX());
-        PointForSpline ptY = new PointForSpline(params*c, clickPoint.getY());
+       // System.out.println(params  + " ПАРМЕТР ");
+
+        diffParams.add(c*Math.pow(Math.pow(clickPoint.getX() - pointsX.get(counterOfPoints - 1).getVal(), 2) +
+                Math.pow(clickPoint.getY() - pointsY.get(counterOfPoints - 1).getVal(), 2), 0.5));
+        //System.out.println(Math.pow(Math.pow(clickPoint.getX() - pointsX.get(counterOfPoints - 1).getVal(), 2) +
+      //          Math.pow(clickPoint.getY() - pointsY.get(counterOfPoints - 1).getVal(), 2), 0.5) + "добавка");
+        PointForSpline ptX = new PointForSpline(params, clickPoint.getX());
+        PointForSpline ptY = new PointForSpline(params, clickPoint.getY());
         ptX.setFirstDiff((ptX.getVal() - pointsX.get(counterOfPoints-2).getVal()) /
                 (ptX.getCoordParameter() - pointsX.get(counterOfPoints-2).getCoordParameter()));
         ptY.setFirstDiff((ptY.getVal() - pointsY.get(counterOfPoints-2).getVal()) /
@@ -87,6 +97,13 @@ public class HelloController {
     }
 
     private void drawSpline(GraphicsContext graphicsContext){
+        for (PointForSpline pt : pointsX){
+            System.out.println(pt.getCoordParameter());
+        }
+        System.out.println("--diffs--");
+        for (Double pt: diffParams){
+            System.out.println(pt);
+        }
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         final int POINT_RADIUS = 3;
         for(int i = 0; i < counterOfPoints; i++){
