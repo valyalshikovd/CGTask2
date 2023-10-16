@@ -18,7 +18,7 @@ class Spline {
             double length = val.get(i - 1).getCoordParameter() - val.get(i - 2).getCoordParameter();
             double x = val.get(i - 2).getCoordParameter();
             for (int j = 0; j < Math.abs(length); j++) {
-                x ++;
+                x += 1;
                 spline.add(coefficients[0] * Math.pow(x, 3) +
                         coefficients[1] * Math.pow(x, 2) +
                                 coefficients[2] * x+
@@ -26,10 +26,10 @@ class Spline {
                         );
             }
             if(i == val.size() - 1){
-                length = val.get(i ).getCoordParameter() - val.get(i -1).getCoordParameter();
+                length = val.get(i ).getCoordParameter() - val.get(i -1).getCoordParameter() - 1;
                 x = val.get(i - 1).getCoordParameter();
-                for (int k = 0; k < Math.abs(length) ; k++) {
-                    x++;
+                for (int k = 0; k < Math.abs(length) - 1; k ++) {
+                    x ++;
                     spline.add( coefficients[0] * Math.pow(x, 3) +
                             coefficients[1] * Math.pow(x, 2)+
                             coefficients[2] * x  +
