@@ -22,15 +22,21 @@ public class HelloController {
     private void initialize() {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+        //line.addPointToLine(1000000, 100);
+      //  line.addPointToLine(100, 1000000);
         canvas.setOnMouseClicked(event -> {
             switch (event.getButton()) {
                 case PRIMARY -> handlePrimaryClick(canvas.getGraphicsContext2D(), event);
             }
         });
     }
-
     private void handlePrimaryClick(GraphicsContext graphicsContext, MouseEvent event) {
         final Point2D clickPoint = new Point2D(event.getX(), event.getY());
+        if(line.getCounterOfPoints() > 1
+        && (clickPoint.getX() == line.getPointsX().get(line.getCounterOfPoints() - 1).getVal()
+        || clickPoint.getY() == line.getPointsY().get(line.getCounterOfPoints() - 1).getVal())){
+            return;
+        }
         line.addPointToLine(clickPoint.getX(), clickPoint.getY());
         drawSpline(graphicsContext);
     }
@@ -38,8 +44,8 @@ public class HelloController {
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         final int POINT_RADIUS = 3;
         for(int i = 0; i < line.getCounterOfPoints(); i++){
-            graphicsContext.fillOval(
-                    line.getPointsX().get(i).getVal() - POINT_RADIUS, line.getPointsY().get(i).getVal(),
+            graphicsContext.strokeOval(
+                    line.getPointsX().get(i).getVal() - POINT_RADIUS, line.getPointsY().get(i).getVal()- POINT_RADIUS,
                     2 * POINT_RADIUS, 2 * POINT_RADIUS);
         }
         if(line.getCounterOfPoints() == 2){
